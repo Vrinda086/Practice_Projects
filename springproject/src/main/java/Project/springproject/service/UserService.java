@@ -1,5 +1,7 @@
 package Project.springproject.service;
 
+import Project.springproject.model.reponse.LoginResponse;
+import Project.springproject.model.reponse.RegistrationResponse;
 import Project.springproject.model.reponse.UserDetailsResponse;
 import Project.springproject.model.request.UserDetailsRequest;
 import org.springframework.stereotype.Service;
@@ -12,28 +14,29 @@ public class UserService
 {
   private final Map<String, UserDetailsRequest> userTempStorage = new HashMap<>();
   private final Map<String, Boolean> loggedInUsers = new HashMap<>();
-  public String registerUser(UserDetailsRequest userDetails)
+  public RegistrationResponse registerUser(UserDetailsRequest userDetails)
  {
      if(userTempStorage.containsKey(userDetails.getEmail()))
      {
-         return "Email already registered";
+         return new RegistrationResponse( "Email already registered",false);
      }
      userTempStorage.put(userDetails.getEmail(), userDetails);
-     return "Registration Successful";
+     return new RegistrationResponse("Registration Successful",true);
  }
-    public String loginUser(String email, String password) {
+    public LoginResponse loginUser(String email, String password) {
         UserDetailsRequest registeredUser = userTempStorage.get(email);
 
         if (registeredUser == null) {
-            return "User with this email does not exist";
+            return new LoginResponse("User with this email does not exist", false, email, false);
         }
         if (!registeredUser.getPassword().equals(password)) {
-            return "Invalid Password";
+            return new LoginResponse("Invalid Password", false, email, false);
         }
 
         // Mark user as logged in
         loggedInUsers.put(email, true);
-        return "Login successful! Now use /show-details to choose whether to see your details.";
+        return new LoginResponse("Login successful", true, email, true);
+
     }
     public UserDetailsResponse getUserDetails(String email, boolean showDetails) {
         if (!loggedInUsers.getOrDefault(email, false)) {

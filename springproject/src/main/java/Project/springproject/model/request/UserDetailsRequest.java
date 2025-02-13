@@ -25,15 +25,7 @@ public class UserDetailsRequest{
             message = "Invalid Password"
     )
     private String password;
-    private boolean Details;
 
-    public boolean isDetails() {
-        return Details;
-    }
-
-    public void setDetails(boolean details) {
-        Details = details;
-    }
 
     public UserDetailsRequest(String firstName, String middleName, String lastName, int age, String email, String password, boolean Details)
    {
@@ -43,7 +35,6 @@ public class UserDetailsRequest{
        this.age = age;
        this.email = email;
        this.password = password;
-       this.Details = Details;
 
    }
 
